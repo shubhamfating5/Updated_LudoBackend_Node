@@ -1,3 +1,4 @@
+// index.js
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
@@ -10,7 +11,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
+const ORIGIN = process.env.CORS_ORIGIN || '*';
 
 app.use(cors({ origin: ORIGIN, credentials: true }));
 app.get('/', (_req, res) => res.json({ status: 'Ludo WebSocket Server Running ✅' }));
@@ -22,6 +23,8 @@ const io = new Server(server, {
     methods: ['GET', 'POST'],
     credentials: true,
   },
+  path: '/socket.io', // Explicitly set Socket.IO path
+  transports: ['websocket', 'polling'], // Support both for compatibility
 });
 
 registerSocketHandlers(io);
